@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This research aims to broke privacy sandbox.
+This research aims to broke privacy sandbox. It seems we can extract small bits of info with entropy attack and unlimited with timing attacks. These techniques can be combined for more effective results.
 
 ## Entropy based attack
 
