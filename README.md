@@ -17,3 +17,11 @@ First attempt was to abuse selecturl and shared state to identify user cross sit
 Entropy-based attack faces budget issues when log2(urls) is greater than 0. As we can run sleep in worklets, we can utilize time to extract information. Passing a single URL means log2(1 URL) = 0. We can use this method to extract information without any budget constraints.
 
 ![Alt text](image-2.png)
+
+## Try
+
+Enable privacy sandbox flags and add `http://localhost:8080` to site list.
+
+![Alt text](image-1.png)
+
+Run `go run entropy-based/main.go` and `go run time-based/main.go` to see results.
