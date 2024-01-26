@@ -1,8 +1,5 @@
 const idServer = "localhost:8080";
 
-const maxDigits = 4;
-const maxChar = 4
-
 function drawFrame(id) {
 	const frame = document.createElement('fencedframe');
 	frame.id = id;
@@ -60,12 +57,9 @@ async function injectIds() {
 
 let extractInterval = setInterval(() => {
 	fetch(`http://${idServer}/id?id=${uuid}`).then((response) => response.json()).then((data) => {
-		if (data.length == 4) {
-			clearInterval(extractInterval);
-			document.querySelector(".red").innerHTML = data;
-		}
+		document.querySelector(".red").innerHTML = data;
 	}
 	)
-}, 1000)
+}, 3000)
 
 injectIds();

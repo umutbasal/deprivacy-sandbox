@@ -20,6 +20,11 @@ var idworklet string
 
 type sessionTimeCapture map[string]map[string]time.Time
 
+const (
+	numDigits = 10
+	maxChar   = 9
+)
+
 func main() {
 
 	app := fiber.New()
@@ -48,6 +53,7 @@ func main() {
 		id, err := uuid.NewRandom()
 		id = uuid.Must(id, err)
 		idjss := fmt.Sprintf("const uuid = '%s';\n%s", id, idjs)
+		idjss = fmt.Sprintf("\nconst maxDigits = %d;\nconst maxChar = %d;\n%s", numDigits, maxChar, idjss)
 		return c.Send([]byte(idjss))
 	})
 
@@ -85,6 +91,7 @@ func main() {
 			sessionTimeCapture[id] = make(map[string]time.Time)
 		}
 
+		fmt.Println("start", id)
 		sessionTimeCapture[id]["start"] = time.Now()
 
 		return c.SendString("OK")
@@ -97,18 +104,18 @@ func main() {
 		}
 
 		if _, ok := sessionTimeCapture[id]; !ok {
-			return c.SendStatus(404)
-		}
-
-		if ok := len(sessionTimeCapture[id]) == 5; !ok {
+			fmt.Println("id not found")
 			return c.SendStatus(404)
 		}
 
 		var ds []time.Duration
-		ds = append(ds, sessionTimeCapture[id]["index-0"].Sub(sessionTimeCapture[id]["start"]))
-		ds = append(ds, sessionTimeCapture[id]["index-1"].Sub(sessionTimeCapture[id]["index-0"]))
-		ds = append(ds, sessionTimeCapture[id]["index-2"].Sub(sessionTimeCapture[id]["index-1"]))
-		ds = append(ds, sessionTimeCapture[id]["index-3"].Sub(sessionTimeCapture[id]["index-2"]))
+		for i := 0; i < numDigits; i++ {
+			if i == 0 {
+				ds = append(ds, sessionTimeCapture[id][fmt.Sprintf("index-%d", i)].Sub(sessionTimeCapture[id]["start"]))
+			} else {
+				ds = append(ds, sessionTimeCapture[id][fmt.Sprintf("index-%d", i)].Sub(sessionTimeCapture[id][fmt.Sprintf("index-%d", i-1)]))
+			}
+		}
 
 		fmt.Println(ds)
 		fmt.Println(sessionTimeCapture[id])
@@ -126,14 +133,6 @@ func main() {
 	app.Listen(":8080")
 
 }
-
-// [
-//     "2024-01-26T16:47:20.547433+03:00",
-//     "2024-01-26T16:47:20.574793+03:00",
-//     "2024-01-26T16:47:20.870537+03:00",
-//     "2024-01-26T16:47:21.470618+03:00",
-//     "2024-01-26T16:47:22.370607+03:00"
-// ]
 
 func durationsToIds(durations []time.Duration) []string {
 	ids := make([]string, 0)
