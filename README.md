@@ -14,6 +14,6 @@ First attempt was to abuse selecturl and shared state to identify user cross sit
 
 ## Time based attack
 
-Entropy based attack has budget proble when log2(urls) bigger then 0 as we can run sleep in worklets, we can use time to extract information. Passing single url means log2(1 url) = 0. We can use this to extract information without any budget
+Entropy based attack has budget problem when log2(urls) bigger then 0 as we can run sleep in worklets, we can use time to extract information. Passing single url means log2(1 url) = 0. We can use this to extract information without any budget
 
 ![Alt text](image-1.png)
