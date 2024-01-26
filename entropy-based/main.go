@@ -44,7 +44,7 @@ func main() {
 	})
 
 	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Deprivacy Sandbox")
+		return c.SendString("Deprivacy Sandbox - Entropy based")
 	})
 
 	app.Get("/id.html", func(c *fiber.Ctx) error {
